@@ -203,20 +203,28 @@ public static void generarReporteMarcas() {
     System.out.println("=== Reporte 1: Según Marca ===");
     System.out.println("Marca                 Total de días rentado");
 
-    // Crear un mapa para almacenar la suma de días rentados por marca
     String[] marcas = new String[numVehiculos];
     int[] diasRentadoPorMarca = new int[numVehiculos];
     int totalDiasRentado = 0;
 
     for (int i = 0; i < numVehiculos; i++) {
         String marca = vehiculos[i][0];
-        int diasRentado = 0; // Inicializar días rentados en 0
+        int diasRentado = 0;
 
-        // Aquí podrías implementar la lógica para calcular los días rentados por marca
+        for (int j = 0; j < numClientes; j++) {
+            if (clientes[j][0] != null && clientes[j][0].equals(clienteSesion)) {
+                // Aquí debes implementar la lógica real para calcular los días rentados por marca
+                // Puedes acceder al vehículo en la posición 'i' de la matriz 'vehiculos'
+                // y calcular los días en función de las órdenes de venta o facturas registradas.
+                // Supongamos que el cálculo es de 5 días para este ejemplo.
+                diasRentado = 5;
+                break;
+            }
+        }
 
         int index = -1;
         for (int j = 0; j < totalDiasRentado; j++) {
-            if (marcas[j].equals(marca)) {
+            if (marcas[j] != null && marcas[j].equals(marca)) {
                 index = j;
                 break;
             }
@@ -262,7 +270,6 @@ public static void generarReporteModelos() {
     System.out.println("=== Reporte 2: Según Modelo ===");
     System.out.println("Modelo               Total de días rentado");
 
-    // Crear un mapa para almacenar la suma de días rentados por modelo
     String[] modelos = new String[numVehiculos];
     int[] diasRentadoPorModelo = new int[numVehiculos];
     int totalDiasRentado = 0;
@@ -271,11 +278,20 @@ public static void generarReporteModelos() {
         String modelo = vehiculos[i][2];
         int diasRentado = 0; // Inicializar días rentados en 0
 
-        // Aquí podrías implementar la lógica para calcular los días rentados por modelo
+        for (int j = 0; j < numClientes; j++) {
+            if (clientes[j][0] != null && clientes[j][0].equals(clienteSesion)) {
+                // Aquí debes implementar la lógica real para calcular los días rentados por modelo
+                // Puedes acceder al vehículo en la posición 'i' de la matriz 'vehiculos'
+                // y calcular los días en función de las órdenes de venta o facturas registradas.
+                // Supongamos que el cálculo es de 3 días para este ejemplo.
+                diasRentado = 3;
+                break;
+            }
+        }
 
         int index = -1;
         for (int j = 0; j < totalDiasRentado; j++) {
-            if (modelos[j].equals(modelo)) {
+            if (modelos[j] != null && modelos[j].equals(modelo)) {
                 index = j;
                 break;
             }
@@ -393,28 +409,47 @@ public static void ingresarComoUsuario() {
     }
 
     public static void menuCliente() {
-        Scanner scanner = new Scanner(System.in);
-        int opcion;
+    Scanner scanner = new Scanner(System.in);
+    int opcion;
 
-        do {
-            System.out.println("=== Menú Cliente ===");
-            System.out.println("1. Realizar Orden de venta de Vehiculos");
-            System.out.println("2. Cerrar sesión");
-            System.out.print("Seleccione una opción: ");
-            opcion = scanner.nextInt();
+    do {
+        System.out.println("=== Menú Cliente ===");
+        System.out.println("1. Realizar Orden de Venta de Vehículos");
+        System.out.println("2. Realizar Factura");
+        System.out.println("3. Cerrar Sesión");
+        System.out.print("Seleccione una opción: ");
+        opcion = scanner.nextInt();
 
-            switch (opcion) {
-                case 1:
-                    // Lógica para realizar una orden de venta de vehículos
-                    System.out.println("Función de realizar orden de venta en construcción.");
-                    break;
-                case 2:
-                    clienteSesion = null; // Cerrar sesión
-                    System.out.println("Sesión cerrada. Volviendo al menú inicial.");
-                    break;
-                default:
-                    System.out.println("Opción no válida. Por favor, seleccione nuevamente.");
-            }
-        } while (opcion != 2);
-    }
+        switch (opcion) {
+            case 1:
+                realizarOrdenVenta();
+                break;
+            case 2:
+                realizarFactura();
+                break;
+            case 3:
+                clienteSesion = null; // Cerrar sesión
+                System.out.println("Sesión cerrada. Volviendo al menú inicial.");
+                break;
+            default:
+                System.out.println("Opción no válida. Por favor, seleccione nuevamente.");
+        }
+    } while (opcion != 3);
+}
+
+public static void realizarOrdenVenta() {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("=== Realizar Orden de Venta ===");
+    // Lógica para realizar una orden de venta de vehículos
+    // Agregar código aquí para seleccionar vehículos, calcular precios, etc.
+}
+
+public static void realizarFactura() {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.println("=== Realizar Factura ===");
+    // Lógica para realizar una factura
+    // Agregar código aquí para generar la factura, cálculos de precios, etc.
+}
 }
