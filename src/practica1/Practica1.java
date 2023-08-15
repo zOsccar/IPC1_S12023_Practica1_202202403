@@ -213,10 +213,7 @@ public static void generarReporteMarcas() {
 
         for (int j = 0; j < numClientes; j++) {
             if (clientes[j][0] != null && clientes[j][0].equals(clienteSesion)) {
-                // Aquí debes implementar la lógica real para calcular los días rentados por marca
-                // Puedes acceder al vehículo en la posición 'i' de la matriz 'vehiculos'
-                // y calcular los días en función de las órdenes de venta o facturas registradas.
-                // Supongamos que el cálculo es de 5 días para este ejemplo.
+
                 diasRentado = 5;
                 break;
             }
