@@ -201,143 +201,119 @@ public static void realizarReportes() {
 
 public static void generarReporteMarcas() {
     System.out.println("=== Reporte 1: Según Marca ===");
-    System.out.println("Marca                 Total de días rentado");
+    System.out.println("Modelo/Marca              Total de días rentados por cliente");
 
-    String[] marcas = new String[numVehiculos];
-    int[] diasRentadoPorMarca = new int[numVehiculos];
-    int totalDiasRentado = 0;
+    String[] marcasUnicas = new String[numVehiculos];
+    double[] diasRentadoPorMarca = new double[numVehiculos];
+    int totalMarcasUnicas = 0;
 
     for (int i = 0; i < numVehiculos; i++) {
         String marca = vehiculos[i][0];
-        int diasRentado = 0;
+        double diasRentado = 0.0;
 
-        for (int j = 0; j < numClientes; j++) {
-            if (clientes[j][0] != null && clientes[j][0].equals(clienteSesion)) {
-
-                diasRentado = 5;
-                break;
-            }
+        if (vehiculos[i][4] != null) {
+            diasRentado = Double.parseDouble(vehiculos[i][4]);
         }
 
         int index = -1;
-        for (int j = 0; j < totalDiasRentado; j++) {
-            if (marcas[j] != null && marcas[j].equals(marca)) {
+        for (int j = 0; j < totalMarcasUnicas; j++) {
+            if (marcasUnicas[j] != null && marcasUnicas[j].equals(marca)) {
                 index = j;
                 break;
             }
         }
 
         if (index == -1) {
-            marcas[totalDiasRentado] = marca;
-            diasRentadoPorMarca[totalDiasRentado] += diasRentado;
-            totalDiasRentado++;
+            marcasUnicas[totalMarcasUnicas] = marca;
+            diasRentadoPorMarca[totalMarcasUnicas] = diasRentado;
+            totalMarcasUnicas++;
         } else {
             diasRentadoPorMarca[index] += diasRentado;
         }
     }
 
-    // Ordenar los arreglos en paralelo por días rentados en orden descendente
-    for (int i = 0; i < totalDiasRentado - 1; i++) {
-        for (int j = i + 1; j < totalDiasRentado; j++) {
+    for (int i = 0; i < totalMarcasUnicas - 1; i++) {
+        for (int j = i + 1; j < totalMarcasUnicas; j++) {
             if (diasRentadoPorMarca[j] > diasRentadoPorMarca[i]) {
-                int tempDias = diasRentadoPorMarca[i];
+                double tempDias = diasRentadoPorMarca[i];
                 diasRentadoPorMarca[i] = diasRentadoPorMarca[j];
                 diasRentadoPorMarca[j] = tempDias;
 
-                String tempMarca = marcas[i];
-                marcas[i] = marcas[j];
-                marcas[j] = tempMarca;
+                String tempMarca = marcasUnicas[i];
+                marcasUnicas[i] = marcasUnicas[j];
+                marcasUnicas[j] = tempMarca;
             }
         }
     }
 
-    // Mostrar el reporte ordenado
-    for (int i = 0; i < totalDiasRentado; i++) {
-        String marca = marcas[i];
-        int diasRentado = diasRentadoPorMarca[i];
+    for (int i = 0; i < totalMarcasUnicas; i++) {
+        String marca = marcasUnicas[i];
+        double diasRentado = diasRentadoPorMarca[i];
 
-        System.out.printf("%-20s%d%n", marca, diasRentado);
+        System.out.printf("%-25s%.2f%n", marca, diasRentado);
     }
 
     System.out.println("                             ----------");
-    System.out.printf("%-20s%d%n%n", "Total", totalDiasRentado);
+    System.out.printf("%-25s%d%n%n", "Total", totalMarcasUnicas);
 }
 
 public static void generarReporteModelos() {
     System.out.println("=== Reporte 2: Según Modelo ===");
-    System.out.println("Modelo               Total de días rentado");
+    System.out.println("Modelo/Marca              Total de días rentados por cliente");
 
-    String[] modelos = new String[numVehiculos];
-    int[] diasRentadoPorModelo = new int[numVehiculos];
-    int totalDiasRentado = 0;
+    String[] modelosUnicos = new String[numVehiculos];
+    double[] diasRentadoPorModelo = new double[numVehiculos];
+    int totalModelosUnicos = 0;
 
     for (int i = 0; i < numVehiculos; i++) {
         String modelo = vehiculos[i][2];
-        int diasRentado = 0;
+        double diasRentado = 0.0;
 
-        for (int j = 0; j < numClientes; j++) {
-            if (clientes[j][0] != null && clientes[j][0].equals(clienteSesion)) {
-                diasRentado = calcularDiasRentados(modelo, clientes[j][0]);
-                break;
-            }
+        if (vehiculos[i][4] != null) {
+            diasRentado = Double.parseDouble(vehiculos[i][4]);
         }
 
         int index = -1;
-        for (int j = 0; j < totalDiasRentado; j++) {
-            if (modelos[j] != null && modelos[j].equals(modelo)) {
+        for (int j = 0; j < totalModelosUnicos; j++) {
+            if (modelosUnicos[j] != null && modelosUnicos[j].equals(modelo)) {
                 index = j;
                 break;
             }
         }
 
         if (index == -1) {
-            modelos[totalDiasRentado] = modelo;
-            diasRentadoPorModelo[totalDiasRentado] += diasRentado;
-            totalDiasRentado++;
+            modelosUnicos[totalModelosUnicos] = modelo;
+            diasRentadoPorModelo[totalModelosUnicos] = diasRentado;
+            totalModelosUnicos++;
         } else {
             diasRentadoPorModelo[index] += diasRentado;
         }
     }
 
-    for (int i = 0; i < totalDiasRentado - 1; i++) {
-        for (int j = i + 1; j < totalDiasRentado; j++) {
+    for (int i = 0; i < totalModelosUnicos - 1; i++) {
+        for (int j = i + 1; j < totalModelosUnicos; j++) {
             if (diasRentadoPorModelo[j] > diasRentadoPorModelo[i]) {
-                int tempDias = diasRentadoPorModelo[i];
+                double tempDias = diasRentadoPorModelo[i];
                 diasRentadoPorModelo[i] = diasRentadoPorModelo[j];
                 diasRentadoPorModelo[j] = tempDias;
 
-                String tempModelo = modelos[i];
-                modelos[i] = modelos[j];
-                modelos[j] = tempModelo;
+                String tempModelo = modelosUnicos[i];
+                modelosUnicos[i] = modelosUnicos[j];
+                modelosUnicos[j] = tempModelo;
             }
         }
     }
 
-    for (int i = 0; i < totalDiasRentado; i++) {
-        String modelo = modelos[i];
-        int diasRentado = diasRentadoPorModelo[i];
+    for (int i = 0; i < totalModelosUnicos; i++) {
+        String modelo = modelosUnicos[i];
+        double diasRentado = diasRentadoPorModelo[i];
 
-        System.out.printf("%-20s%d%n", modelo, diasRentado);
+        System.out.printf("%-25s%.2f%n", modelo, diasRentado);
     }
 
     System.out.println("                             ----------");
-    System.out.printf("%-20s%d%n%n", "Total", totalDiasRentado);
+    System.out.printf("%-25s%d%n%n", "Total", totalModelosUnicos);
 }
-
-public static int calcularDiasRentados(String modelo, String clienteNIT) {
-    int totalDiasRentado = 0;
-
-    for (int i = 0; i < numVehiculos; i++) {
-        if (vehiculos[i][2].equals(modelo)) {
-
-            totalDiasRentado += 3;
-        }
-    }
-
-    return totalDiasRentado;
-}
-
- 
 
 public static void ingresarComoUsuario() {
         Scanner scanner = new Scanner(System.in);
@@ -443,7 +419,7 @@ public static void realizarOrdenVenta() {
 
     System.out.println("=== Realizar Orden de Venta ===");
 
-    // Selecciona un vehiculo
+    // Selecciona un vehículo
     System.out.print("Ingrese la placa del vehículo: ");
     String placa = scanner.nextLine();
 
