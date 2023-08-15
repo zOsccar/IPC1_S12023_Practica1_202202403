@@ -420,8 +420,7 @@ public static void ingresarComoUsuario() {
     do {
         System.out.println("=== Menú Cliente ===");
         System.out.println("1. Realizar Orden de Venta de Vehículos");
-        System.out.println("2. Realizar Factura");
-        System.out.println("3. Cerrar Sesión");
+        System.out.println("2. Cerrar Sesión");
         System.out.print("Seleccione una opción: ");
         opcion = scanner.nextInt();
 
