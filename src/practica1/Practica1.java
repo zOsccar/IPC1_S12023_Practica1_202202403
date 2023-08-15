@@ -55,7 +55,7 @@ private static int numDescuentos = 0; // Contador de descuentos registrados
         System.out.print("Ingrese la contraseña: ");
         String contrasena = scanner.nextLine();
 
-        return usuario.equals("admin") && contrasena.equals("pass");
+        return usuario.equals("admin_202202403") && contrasena.equals("202202403");
     }
 
     public static void ingresarComoAdministrador() {
@@ -276,15 +276,11 @@ public static void generarReporteModelos() {
 
     for (int i = 0; i < numVehiculos; i++) {
         String modelo = vehiculos[i][2];
-        int diasRentado = 0; // Inicializar días rentados en 0
+        int diasRentado = 0;
 
         for (int j = 0; j < numClientes; j++) {
             if (clientes[j][0] != null && clientes[j][0].equals(clienteSesion)) {
-                // Aquí debes implementar la lógica real para calcular los días rentados por modelo
-                // Puedes acceder al vehículo en la posición 'i' de la matriz 'vehiculos'
-                // y calcular los días en función de las órdenes de venta o facturas registradas.
-                // Supongamos que el cálculo es de 3 días para este ejemplo.
-                diasRentado = 3;
+                diasRentado = calcularDiasRentados(modelo, clientes[j][0]);
                 break;
             }
         }
@@ -306,7 +302,6 @@ public static void generarReporteModelos() {
         }
     }
 
-    // Ordenar los arreglos en paralelo por días rentados en orden descendente
     for (int i = 0; i < totalDiasRentado - 1; i++) {
         for (int j = i + 1; j < totalDiasRentado; j++) {
             if (diasRentadoPorModelo[j] > diasRentadoPorModelo[i]) {
@@ -321,7 +316,6 @@ public static void generarReporteModelos() {
         }
     }
 
-    // Mostrar el reporte ordenado
     for (int i = 0; i < totalDiasRentado; i++) {
         String modelo = modelos[i];
         int diasRentado = diasRentadoPorModelo[i];
@@ -332,6 +326,20 @@ public static void generarReporteModelos() {
     System.out.println("                             ----------");
     System.out.printf("%-20s%d%n%n", "Total", totalDiasRentado);
 }
+
+public static int calcularDiasRentados(String modelo, String clienteNIT) {
+    int totalDiasRentado = 0;
+
+    for (int i = 0; i < numVehiculos; i++) {
+        if (vehiculos[i][2].equals(modelo)) {
+
+            totalDiasRentado += 3;
+        }
+    }
+
+    return totalDiasRentado;
+}
+
  
 
 public static void ingresarComoUsuario() {
@@ -441,15 +449,67 @@ public static void realizarOrdenVenta() {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("=== Realizar Orden de Venta ===");
-    // Lógica para realizar una orden de venta de vehículos
-    // Agregar código aquí para seleccionar vehículos, calcular precios, etc.
+
+    // Selecciona un vehiculo
+    System.out.print("Ingrese la placa del vehículo: ");
+    String placa = scanner.nextLine();
+
+    // Lo busca
+    int vehiculoIndex = -1;
+    for (int i = 0; i < numVehiculos; i++) {
+        if (vehiculos[i][3] != null && vehiculos[i][3].equals(placa)) {
+            vehiculoIndex = i;
+            break;
+        }
+    }
+
+    if (vehiculoIndex == -1) {
+        System.out.println("No se encontró un vehículo con la placa proporcionada.");
+        return;
+    }
+
+    // Calcula el precio total
+    System.out.print("Ingrese el número de días de alquiler: ");
+    int numDias = scanner.nextInt();
+    double costoPorDia = Double.parseDouble(vehiculos[vehiculoIndex][4]);
+    double total = numDias * costoPorDia;
+
+    // Enseña detalles
+    System.out.println("Detalles de la Orden:");
+    System.out.println("Vehículo: " + vehiculos[vehiculoIndex][0] + " " + vehiculos[vehiculoIndex][1] + " " + vehiculos[vehiculoIndex][2]);
+    System.out.println("Placa: " + vehiculos[vehiculoIndex][3]);
+    System.out.println("Días de alquiler: " + numDias);
+    System.out.println("Costo por día: Q" + costoPorDia);
+    System.out.println("Total: Q" + total);
+
+
 }
 
 public static void realizarFactura() {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("=== Realizar Factura ===");
-    // Lógica para realizar una factura
-    // Agregar código aquí para generar la factura, cálculos de precios, etc.
+
+    // Busca al cliente logeado
+    int clienteIndex = -1;
+    for (int i = 0; i < numClientes; i++) {
+        if (clientes[i][0] != null && clientes[i][0].equals(clienteSesion)) {
+            clienteIndex = i;
+            break;
+        }
+    }
+
+    if (clienteIndex == -1) {
+        System.out.println("No se encontró un cliente con la sesión actual.");
+        return;
+    }
+
+    // Calcula la cantidad a pagar
+
+
+
+    System.out.println("Detalles de la Factura:");
+    System.out.println("Cliente: " + clientes[clienteIndex][1] + " " + clientes[clienteIndex][2]);
+
 }
 }
