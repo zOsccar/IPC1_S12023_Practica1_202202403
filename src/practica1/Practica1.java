@@ -430,16 +430,13 @@ public static void ingresarComoUsuario() {
                 realizarOrdenVenta();
                 break;
             case 2:
-                realizarFactura();
-                break;
-            case 3:
                 clienteSesion = null; // Cerrar sesión
                 System.out.println("Sesión cerrada. Volviendo al menú inicial.");
                 break;
             default:
                 System.out.println("Opción no válida. Por favor, seleccione nuevamente.");
         }
-    } while (opcion != 3);
+    } while (opcion != 2);
 }
 
 public static void realizarOrdenVenta() {
@@ -451,7 +448,7 @@ public static void realizarOrdenVenta() {
     System.out.print("Ingrese la placa del vehículo: ");
     String placa = scanner.nextLine();
 
-    // Lo busca
+    // Buscar el vehículo
     int vehiculoIndex = -1;
     for (int i = 0; i < numVehiculos; i++) {
         if (vehiculos[i][3] != null && vehiculos[i][3].equals(placa)) {
@@ -465,48 +462,31 @@ public static void realizarOrdenVenta() {
         return;
     }
 
-    // Calcula el precio total
+    // Calcular el precio total
     System.out.print("Ingrese el número de días de alquiler: ");
     int numDias = scanner.nextInt();
     double costoPorDia = Double.parseDouble(vehiculos[vehiculoIndex][4]);
     double total = numDias * costoPorDia;
 
-    // Enseña detalles
-    System.out.println("Detalles de la Orden:");
-    System.out.println("Vehículo: " + vehiculos[vehiculoIndex][0] + " " + vehiculos[vehiculoIndex][1] + " " + vehiculos[vehiculoIndex][2]);
-    System.out.println("Placa: " + vehiculos[vehiculoIndex][3]);
-    System.out.println("Días de alquiler: " + numDias);
-    System.out.println("Costo por día: Q" + costoPorDia);
-    System.out.println("Total: Q" + total);
-
-
-}
-
-public static void realizarFactura() {
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.println("=== Realizar Factura ===");
-
-    // Busca al cliente logeado
-    int clienteIndex = -1;
+    // Aplicar descuento si el cliente tiene uno
+    double descuento = 0.0;
     for (int i = 0; i < numClientes; i++) {
         if (clientes[i][0] != null && clientes[i][0].equals(clienteSesion)) {
-            clienteIndex = i;
+            descuento = porcentajeDescuento[i] * total / 100.0;
             break;
         }
     }
 
-    if (clienteIndex == -1) {
-        System.out.println("No se encontró un cliente con la sesión actual.");
-        return;
-    }
+    double totalConDescuento = total - descuento;
 
-    // Calcula la cantidad a pagar
-
-
-
-    System.out.println("Detalles de la Factura:");
-    System.out.println("Cliente: " + clientes[clienteIndex][1] + " " + clientes[clienteIndex][2]);
-
+    // Factura
+    System.out.println("=== Factura ===");
+    System.out.println("Vehículo: " + vehiculos[vehiculoIndex][0] + " " + vehiculos[vehiculoIndex][1] + " " + vehiculos[vehiculoIndex][2]);
+    System.out.println("Placa: " + vehiculos[vehiculoIndex][3]);
+    System.out.println("Días de alquiler: " + numDias);
+    System.out.println("Costo por día: Q" + costoPorDia);
+    System.out.println("Total sin descuento: Q" + total);
+    System.out.println("Descuento aplicado: Q" + descuento);
+    System.out.println("Total a pagar con descuento: Q" + totalConDescuento);
 }
 }
